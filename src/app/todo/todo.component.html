@@ -1,0 +1,75 @@
+<div class="border border-gray-200 p-4 rounded-md">
+  <h1 class="text-2xl text-center font-semibold">Todo List</h1>
+  <hr class="my-2" />
+
+  <div class="flex items-center gap-2 mb-4">
+    <input
+      class="rounded-md border border-gray-200 focus:ring-2 px-3 py-[3px] flex-1 focus:ring-purple-500 focus:outline-none"
+      placeholder="Todo title here..."
+      #titleInput
+      (keypress)="onKeyPress($event, titleInput)"
+    />
+    <button
+      class="flex gap-2 text-white items-center bg-purple-500 rounded-md px-3 py-1 focus:ring-1 focus:ring-offset-1 focus:ring-purple-500"
+      (click)="onClick(titleInput)"
+    >
+      <i class="fa-solid fa-plus"></i>
+      <span>Add Todo</span>
+    </button>
+  </div>
+
+  <ng-template [ngIf]="!isLoading">
+    <div class="flex flex-col" *ngFor="let todo of todos">
+      <div
+        class="border rounded-md border-gray-300 px-4 py-2 flex mb-2 items-center"
+      >
+        <i
+          class="text-green-500"
+          [ngClass]="
+            todo.isDone ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle'
+          "
+        ></i>
+        <p
+          class="flex-1 px-2 cursor-pointer"
+          (click)="onChangeStatus(todo.id, !todo.isDone)"
+        >
+          {{ todo.title }}
+        </p>
+        <button (click)="onDeleteTodo(todo.id)">
+          <i class="text-red-500 fa-regular fa-trash-can"></i>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template [ngIf]="isLoading">
+    <div class="flex items-center justify-center">
+      <svg
+        class="animate-spin -ml-1 mr-3 h-5 w-5 text-purple-500"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        ></path>
+      </svg>
+    </div>
+  </ng-template>
+
+  <ng-template [ngIf]="todos.length === 0 && !isLoading">
+    <div class="flex items-center justify-center">
+      <p class="text-sm text-gray-600">Todos is empty.</p>
+    </div>
+  </ng-template>
+</div>
